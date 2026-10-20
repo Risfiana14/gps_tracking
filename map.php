@@ -15,11 +15,10 @@ require_once 'config.php';
     // Peta dengan koordinat awal
     var map = L.map('map').setView([0, 0], 2);
 
-    // Clean map dengan layer putih bersih
-    var cleanLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: false,
-        subdomains: 'abcd',
-        maxZoom: 19
+    // Peta menggunakan OpenStreetMap (Gratis & Tanpa API Key)
+    var cleanLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
     
     // Variabel untuk historical track
