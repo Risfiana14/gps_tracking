@@ -1,0 +1,40 @@
+# Script GPS Tracking untuk RouterOS v7 - Versi yang Berhasil
+# Jalankan perintah monitor GPS dan simpan hasilnya ke dalam variabel 
+:local gpsData [/system gps monitor once as-value]; 
+
+# Ambil nilai latitude, longitude, dan speed dari hasil monitor 
+:local latitude ($gpsData->"latitude"); 
+:local longitude ($gpsData->"longitude"); 
+:local speed ($gpsData->"speed"); 
+
+# Cek apakah data GPS valid 
+:if (($latitude != "") && ($longitude != "")) do={
+
+  # URL server di laptop  
+   :local serverURL "http://8eed09a5fbf9.sn.mynetname.net:999/GPS/gps_receive.php";  
+   
+   # Data GPS untuk dikirim via POST
+   :local postData ("lat=" . $latitude . "&lon=" . $longitude . "&speed=" . $speed);
+  
+   # Kirim data ke server menggunakan POST dan simpan response
+   :local fetchResult [/tool fetch url=$serverURL mode=http http-method=post http-data=$postData as-value];
+   :local serverResponse ($fetchResult->
+"data");
+
+  # Log untuk memantau pengiriman data GPS 
+  /log info "GPS Data sent: lat=$latitude, lon=$longitude, speed=$speed";
+  /log info "Server response: $serverResponse";
+  
+  # Auto-delete log RouterOS yang lebih dari 7 hari (setiap 10 kali kirim data)
+  :local randomCheck [:rndnum from=1 to=10];
+  :if ($randomCheck = 1) do={
+    # Hapus log lama (lebih dari 7 hari)
+    :foreach logEntry in=[/log find where time<([:timestamp] - 604800)] do={
+      /log remove $logEntry;
+    }
+    /log info "RouterOS: Old logs cleaned (>7 days)";
+  }
+
+} else={ 
+  /log warning "GPS data invalid, cannot send"; 
+}
