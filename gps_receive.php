@@ -8,7 +8,7 @@ error_log("Raw input: " . file_get_contents('php://input'));
 $lat = isset($_POST['lat']) ? $_POST['lat'] : (isset($_GET['lat']) ? $_GET['lat'] : null);
 $lon = isset($_POST['lon']) ? $_POST['lon'] : (isset($_GET['lon']) ? $_GET['lon'] : null);
 $speed = isset($_POST['speed']) ? $_POST['speed'] : (isset($_GET['speed']) ? $_GET['speed'] : 0);
-$device_name = isset($_POST['device_name']) ? $_POST['device_name'] : (isset($_GET['device_name']) ? $_GET['device_name'] : 'TS-01'); // Default ke 'TS-01' jika kosong
+$device_name = isset($_POST['device_name']) ? $_POST['device_name'] : (isset($_GET['device_name']) ? $_GET['device_name'] : 'UNKNOWN'); 
 
 // Hapus unit "km/h" dari speed jika ada
 $speed = str_replace(' km/h', '', $speed);
