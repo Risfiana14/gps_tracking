@@ -8,7 +8,6 @@ header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
 
 try {
-    // Query untuk mengambil semua data GPS untuk historical track
     // Diurutkan berdasarkan timestamp untuk membuat jejak yang benar
     $sql = "SELECT latitude, longitude, speed, timestamp 
             FROM gps_data 
@@ -17,9 +16,7 @@ try {
             AND latitude != 0 
             AND longitude != 0
             ORDER BY timestamp ASC";
-    
     $result = $conn->query($sql);
-    
     $trackData = array();
     
     if ($result->num_rows > 0) {

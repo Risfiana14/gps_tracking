@@ -32,7 +32,6 @@ if ($conn->connect_error) {
 $sql = "INSERT INTO gps_data (latitude, longitude, speed, device_name) VALUES ('$lat', '$lon', '$speed', '$device_name')";
 
 if ($conn->query($sql) === TRUE) {
-    // Auto-delete: Hapus data lebih dari 7 hari atau batasi maksimal 1000 record
     // Opsi 1: Hapus data lebih dari 7 hari
     $delete_old = "DELETE FROM gps_data WHERE timestamp < DATE_SUB(NOW(), INTERVAL 7 DAY)";
     $deleted_old = $conn->query($delete_old);
